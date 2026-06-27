@@ -88,4 +88,27 @@
   $("ed-load").onclick = load;
   $("ed-commit").onclick = commit;
   $("ed-src").addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(preview, 200); });
+
+  // Draggable divider between editor and preview (persisted).
+  (function () {
+    const split = $("ed-split"), gutter = $("ed-gutter");
+    if (!split || !gutter) return;
+    const saved = localStorage.getItem("ed_leftw");
+    if (saved) split.style.setProperty("--leftw", saved);
+    let drag = false;
+    gutter.addEventListener("mousedown", (e) => {
+      drag = true; gutter.classList.add("dragging"); document.body.style.cursor = "col-resize"; e.preventDefault();
+    });
+    window.addEventListener("mousemove", (e) => {
+      if (!drag) return;
+      const r = split.getBoundingClientRect();
+      const pct = Math.max(15, Math.min(85, ((e.clientX - r.left) / r.width) * 100));
+      split.style.setProperty("--leftw", pct + "%");
+    });
+    window.addEventListener("mouseup", () => {
+      if (!drag) return;
+      drag = false; gutter.classList.remove("dragging"); document.body.style.cursor = "";
+      localStorage.setItem("ed_leftw", split.style.getPropertyValue("--leftw"));
+    });
+  })();
 })();

@@ -17,16 +17,20 @@ html, body { margin: 0; height: 100%; font-family: system-ui, -apple-system, san
 .ed-bar button:disabled { opacity: .45; cursor: not-allowed; }
 #ed-commit { background: #0d7a70; color: #fff; border-color: #0d7a70; }
 
-.ed-split { display: grid; grid-template-columns: 1fr 1fr; height: calc(100vh - 49px); }
+/* Left pane width is a CSS variable the drag handle updates. */
+.ed-split { display: grid; grid-template-columns: var(--leftw, 1fr) 6px minmax(0, 1fr); height: calc(100vh - 49px); }
 .ed-src {
-  border: 0; border-right: 1px solid #d0d7de; padding: 20px;
+  border: 0; padding: 20px; min-width: 0;
   font-family: ui-monospace, "SF Mono", monospace; font-size: 13px; line-height: 1.6;
   resize: none; outline: none; tab-size: 2;
 }
-.ed-preview { overflow: auto; padding: 24px 36px; }
+.ed-gutter { background: #e3e8ee; cursor: col-resize; }
+.ed-gutter:hover, .ed-gutter.dragging { background: #aab4c0; }
+.ed-preview { overflow: auto; padding: 24px 36px; min-width: 0; }
 .ed-preview img { max-width: 100%; }
 
 @media (max-width: 760px) {
   .ed-split { grid-template-columns: 1fr; height: auto; }
-  .ed-src { min-height: 55vh; border-right: 0; border-bottom: 1px solid #d0d7de; }
+  .ed-gutter { display: none; }
+  .ed-src { min-height: 55vh; border-bottom: 1px solid #d0d7de; }
 }

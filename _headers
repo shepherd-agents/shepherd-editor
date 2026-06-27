@@ -1,0 +1,3 @@
+# Don't let browsers cache the editor app; it changes and must update on reload.
+/*
+  Cache-Control: no-cache
