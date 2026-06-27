@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shepherd blog editor</title>
+<!-- Reuse the live blog stylesheet so the preview matches what deploys. -->
+<link rel="stylesheet" href="https://shepherd-agents.ai/blog/blog.css">
+<link rel="stylesheet" href="editor.css">
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+</head>
+<body>
+<header class="ed-bar">
+  <strong>Shepherd blog editor</strong>
+  <code class="ed-file">content/shepherd.md</code>
+  <span class="ed-spacer"></span>
+  <span id="ed-status" class="ed-status">not signed in</span>
+  <button id="ed-signin">Sign in with GitHub</button>
+  <button id="ed-load" disabled>Reload</button>
+  <button id="ed-commit" disabled>Commit &amp; deploy</button>
+</header>
+<main class="ed-split">
+  <textarea id="ed-src" class="ed-src" spellcheck="false" placeholder="Sign in, then the post loads here…"></textarea>
+  <article id="ed-preview" class="ed-preview post-body"></article>
+</main>
+<script src="dialect.js"></script>
+<script src="editor.js"></script>
+</body>
+</html>

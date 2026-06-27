@@ -1,0 +1,32 @@
+/* Editor chrome only; the preview pane is styled by the live blog.css. */
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; font-family: system-ui, -apple-system, sans-serif; }
+
+.ed-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 14px; border-bottom: 1px solid #d0d7de; background: #f6f8fa;
+  font-size: .9rem; height: 49px;
+}
+.ed-file { color: #57606a; font-family: ui-monospace, "SF Mono", monospace; font-size: .82em; }
+.ed-spacer { flex: 1; }
+.ed-status { color: #57606a; font-size: .82em; }
+.ed-bar button {
+  padding: 6px 12px; border: 1px solid #d0d7de; border-radius: 6px;
+  background: #fff; cursor: pointer; font-size: .85rem;
+}
+.ed-bar button:disabled { opacity: .45; cursor: not-allowed; }
+#ed-commit { background: #0d7a70; color: #fff; border-color: #0d7a70; }
+
+.ed-split { display: grid; grid-template-columns: 1fr 1fr; height: calc(100vh - 49px); }
+.ed-src {
+  border: 0; border-right: 1px solid #d0d7de; padding: 20px;
+  font-family: ui-monospace, "SF Mono", monospace; font-size: 13px; line-height: 1.6;
+  resize: none; outline: none; tab-size: 2;
+}
+.ed-preview { overflow: auto; padding: 24px 36px; }
+.ed-preview img { max-width: 100%; }
+
+@media (max-width: 760px) {
+  .ed-split { grid-template-columns: 1fr; height: auto; }
+  .ed-src { min-height: 55vh; border-right: 0; border-bottom: 1px solid #d0d7de; }
+}
