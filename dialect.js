@@ -70,9 +70,30 @@
       .replace(/:agent:/g, sp("brand brand--worker", "logo-agent.png", "agent"));
   }
 
+  // Light front-matter -> title/byline/links header (the deploy renders the
+  // full author block; this is a readable approximation for preview).
+  function titleBlock(text) {
+    if (!text.startsWith("---\n")) return "";
+    const e = text.indexOf("\n---\n", 4);
+    if (e === -1) return "";
+    const fm = text.slice(4, e);
+    const title = (fm.match(/^title:\s*"?(.+?)"?\s*$/m) || [])[1] || "";
+    const authors = [...fm.matchAll(/name:\s*"([^"]+)"/g)].map((m) => m[1])
+      .filter((n) => !/University|Institute/.test(n));
+    const links = [...fm.matchAll(/label:\s*"([^"]+)"(?:[^}]*url:\s*"([^"]+)")?/g)]
+      .map((m) => (m[2] ? `<a href="${m[2]}">${m[1]}</a>` : `<span style="color:#999">${m[1]}</span>`));
+    if (!title) return "";
+    return `<header style="text-align:center;border-bottom:1px solid #e3e8ee;padding-bottom:18px;margin-bottom:26px">
+      <h1 style="margin:0 0 10px;line-height:1.2">${title}</h1>
+      <p style="color:#555;margin:0 0 8px">${authors.join(", ")}</p>
+      <p style="margin:0;font-size:.9em">${links.join(" &nbsp;·&nbsp; ")}</p>
+    </header>`;
+  }
+
   marked.setOptions({ gfm: true, breaks: false });
 
   window.renderDialect = function (text) {
+    const head = titleBlock(text);
     let body = stripFrontMatter(text);
     body = convertFigures(body);
     body = convertCallouts(body);
@@ -85,6 +106,6 @@
       const sn = `<span class="sn"><input type="checkbox" id="sn${num}" class="sn-toggle"><label for="sn${num}" class="sn-ref">${num}</label><span class="sn-body"><span class="sn-num">${num}.</span> ${marked.parseInline(n)}</span></span>`;
       html = html.replace(`@@SN${idx}@@`, sn);
     });
-    return brand(html);
+    return head + brand(html);
   };
 })();

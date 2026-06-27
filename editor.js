@@ -15,7 +15,14 @@
   let sha = null, timer = null;
 
   const status = (s) => { $("ed-status").textContent = s; };
-  const preview = () => { $("ed-preview").innerHTML = renderDialect($("ed-src").value); };
+  const preview = () => {
+    const pane = $("ed-preview");
+    const src = $("ed-src").value;
+    if (!src.trim()) { pane.innerHTML = '<p style="color:#888">Nothing loaded yet. Sign in, then Reload to pull the post.</p>'; return; }
+    if (typeof renderDialect !== "function") { pane.innerHTML = '<p style="color:#c0392b">Preview engine did not load (marked.js may be blocked). Check the browser console.</p>'; return; }
+    try { pane.innerHTML = renderDialect(src); }
+    catch (e) { pane.innerHTML = '<pre style="color:#c0392b;white-space:pre-wrap">Preview error: ' + e.message + '</pre>'; console.error(e); }
+  };
 
   function signedIn() {
     const b = $("ed-signin");
