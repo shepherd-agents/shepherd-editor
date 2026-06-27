@@ -18,8 +18,9 @@
   const preview = () => { $("ed-preview").innerHTML = renderDialect($("ed-src").value); };
 
   function signedIn() {
-    $("ed-signin").textContent = "Signed in";
-    $("ed-signin").disabled = true;
+    const b = $("ed-signin");
+    b.textContent = "Sign out";
+    b.onclick = () => { localStorage.removeItem("gh_token"); token = null; location.reload(); };
     $("ed-load").disabled = false;
     $("ed-commit").disabled = false;
     status("signed in");
@@ -53,8 +54,12 @@
     status("committing…");
     const body = JSON.stringify({ message: msg, content: b64encodeUtf8($("ed-src").value), sha, branch: BRANCH });
     const r = await gh(`repos/${REPO}/contents/${PATH}`, { method: "PUT", body });
-    if (r.ok) { sha = (await r.json()).content.sha; status("committed ✓ — deploying (~1 min)"); }
-    else { status("commit failed (" + r.status + ") — try Reload, then re-apply"); }
+    if (r.ok) { sha = (await r.json()).content.sha; status("committed ✓ — deploying (~1 min)"); return; }
+    let m = ""; try { m = (await r.json()).message || ""; } catch {}
+    let scopes = "";
+    try { const u = await gh("user"); scopes = u.headers.get("X-OAuth-Scopes") || "(none)"; } catch {}
+    status(`commit failed (${r.status}): ${m}  [token scopes: ${scopes}]`);
+    console.error("commit failed", r.status, m, "scopes:", scopes);
   }
 
   // --- OAuth web flow ---
