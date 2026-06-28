@@ -28,6 +28,11 @@ html, body { margin: 0; height: 100%; font-family: system-ui, -apple-system, san
 .ed-gutter:hover, .ed-gutter.dragging { background: #aab4c0; }
 .ed-preview { overflow: auto; padding: 24px 36px; min-width: 0; }
 .ed-preview img { max-width: 100%; }
+/* The preview reuses the blog stylesheet, which caps content at the blog's fixed
+   column (~680px). In the editor we want the rendered page to fill its pane so
+   the divider visibly resizes it. The #id beats blog.css's class selectors. */
+#ed-preview, #ed-preview > *, #ed-preview figure, #ed-preview table,
+#ed-preview .callout, #ed-preview pre, #ed-preview .post__foot { max-width: none; }
 
 @media (max-width: 760px) {
   .ed-split { grid-template-columns: 1fr; height: auto; }
