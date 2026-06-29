@@ -36,7 +36,7 @@
         const inner = [];
         while (i < lines.length && lines[i].startsWith(">")) { inner.push(lines[i].replace(/^>\s?/, "")); i++; }
         const label = type === "insight"
-          ? `<p class="callout__label">\u{1F4A1} Takeaway <img class="callout__logo" src="${ASSET}logo-shepherd.png" alt=""></p>`
+          ? `<p class="callout__label">\u{1F4A1} Takeaway:</p>`
           : "";
         out.push("", `<aside class="callout callout--${type}">`, label, marked.parse(inner.join("\n")), "</aside>", "");
       } else { out.push(lines[i]); i++; }
